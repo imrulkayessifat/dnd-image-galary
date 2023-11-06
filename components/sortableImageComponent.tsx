@@ -7,11 +7,12 @@ interface SortableProps {
     image: SortableImage;
     selectedImages: string[];
     activeIndex?: number;
+    imageInRow1Col1Id:string;
     toggleImageSelection: (id: string) => void
 }
 
 const SortableImageComponent: React.FC<SortableProps> = ({
-    image, selectedImages, activeIndex, toggleImageSelection
+    image, selectedImages, activeIndex, imageInRow1Col1Id,toggleImageSelection
 }) => {
 
     const { attributes, listeners, isDragging, index, over, setNodeRef } = useSortable({ id: image.id });
@@ -32,6 +33,7 @@ const SortableImageComponent: React.FC<SortableProps> = ({
             attributes={attributes}
             listeners={listeners}
             image={image}
+            imageInRow1Col1Id={imageInRow1Col1Id}
             selectedImages={selectedImages}
             toggleImageSelection={toggleImageSelection}
         />

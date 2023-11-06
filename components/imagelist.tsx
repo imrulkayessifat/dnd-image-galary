@@ -11,7 +11,7 @@ import { ImageProps } from '@/type/types'
 
 const ImageList = memo(
     forwardRef<HTMLDivElement, ImageProps>(function ImageFn(props, ref) {
-        const { image, overlay, selectedImages, active, insertPosition, attributes, toggleImageSelection, listeners } = props;
+        const { image, overlay, selectedImages, active, imageInRow1Col1Id, insertPosition, attributes, toggleImageSelection, listeners } = props;
         const [isCardHovered, setIsCardHovered] = useState(false);
         const [isChecked, setIsChecked] = useState(false);
 
@@ -22,6 +22,8 @@ const ImageList = memo(
             }
         };
 
+        const isRowSpan2 = image.id === imageInRow1Col1Id;
+
         return (
             <div
                 ref={ref}
@@ -30,20 +32,21 @@ const ImageList = memo(
                     active: active,
                     insertBefore: insertPosition === "before",
                     insertAfter: insertPosition === "after",
+                    'grayscale contrast-50': isRowSpan2,
                 })}
                 onMouseEnter={() => setIsCardHovered(true)}
                 onMouseLeave={() => setIsCardHovered(false)}
                 {...attributes}
                 {...listeners}
             >
-                <Card className="m-0 p-0 hover:backdrop-blur-xl">
+                <Card className="m-0 p-0 max-w-[300px] max-h-[300px]">
                     <CardContent className="m-0 p-0">
                         {(isCardHovered || (selectedImages?.length ?? 0) > 0) && (
                             <Checkbox
                                 id={image.id}
                                 onClick={() => handleCheckboxClick(image.id)}
                                 checked={isChecked}
-                                className={`z-10 absolute m-4 `}
+                                className={`z-10 absolute m-4  `}
                             />
                         )}
                         <Image
@@ -52,7 +55,7 @@ const ImageList = memo(
                             width={500}
                             height={281}
                             objectFit='cover'
-                            className="rounded-md hover:bg-zinc-300"
+                            className="rounded-md hover:brightness-50"
                         />
                     </CardContent>
                 </Card>

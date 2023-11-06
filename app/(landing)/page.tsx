@@ -1,6 +1,6 @@
 "use client"
 
-import { useState,useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
     closestCenter,
     DndContext,
@@ -28,7 +28,7 @@ export default function App() {
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
     const [activeId, setActiveId] = useState<UniqueIdentifier | undefined>();
-    const [imageInRow1Col1Id, setImageInRow1Col1Id] = useState<string | undefined>("1");
+    const [imageInRow1Col1Id, setImageInRow1Col1Id] = useState<string>("1");
 
     const activeIndex = activeId ? images.findIndex((image) => image.id === activeId) : undefined;
     const sensors = useSensors(
@@ -47,16 +47,16 @@ export default function App() {
                 const oldIndex = items.findIndex((item) => item.id === active.id);
                 const newIndex = items.findIndex((item) => item.id === over.id);
 
-                if (newIndex === 0) {
-                    setImageInRow1Col1Id(String(active.id));
-                }
-                
                 return arrayMove(items, oldIndex, newIndex);
             });
         }
 
         setActiveId(undefined);
     }, []);
+
+    useEffect(() => {
+        setImageInRow1Col1Id(images[0].id);
+    }, [images]);
 
     const toggleImageSelection = (imageId: string) => {
         if (selectedImages.includes(imageId)) {
@@ -112,6 +112,7 @@ export default function App() {
                             key={image.id}
                             image={image}
                             activeIndex={activeIndex}
+                            imageInRow1Col1Id={imageInRow1Col1Id}
                             toggleImageSelection={toggleImageSelection}
                             selectedImages={selectedImages}
                         />
